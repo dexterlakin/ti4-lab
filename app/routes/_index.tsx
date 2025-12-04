@@ -1,8 +1,7 @@
-import {
-  redirect,
-  type LoaderFunction,
-  type MetaFunction,
-} from "@remix-run/node";
+import { type MetaFunction } from "@remix-run/node";
+import { Container, Stack, TextInput } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,12 +10,43 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-// Define the loader function to handle the redirect
-export const loader: LoaderFunction = async () => {
-  return redirect("/draft/prechoice"); // Specify the path you want to redirect to
-};
+const USER_NAME_KEY = "ti4-lab-user-name";
+const USER_UUID_KEY = "ti4-lab-user-uuid";
 
-// Since this route only handles redirect, there's no need for a component
 export default function Index() {
-  return null;
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    // Load existing name from localStorage
+    const storedName = localStorage.getItem(USER_NAME_KEY);
+    if (storedName) {
+      setName(storedName);
+    }
+
+    // Ensure UUID exists in localStorage
+    let storedUuid = localStorage.getItem(USER_UUID_KEY);
+    if (!storedUuid) {
+      storedUuid = uuidv4();
+      localStorage.setItem(USER_UUID_KEY, storedUuid);
+    }
+  }, []);
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setName(newName);
+    localStorage.setItem(USER_NAME_KEY, newName);
+  };
+
+  return (
+    <Container size="sm" py="xl">
+      <Stack gap="md">
+        <TextInput
+          label="Your name:"
+          value={name}
+          onChange={handleNameChange}
+          placeholder="Enter your name"
+        />
+      </Stack>
+    </Container>
+  );
 }

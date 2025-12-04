@@ -19,7 +19,7 @@ export TI4_LAB_DATABASE_PATH="file:///ABSOLUTE_PATH_HERE.sqlite"
 
 _NOTE_: The path must be an absolute path.
 
-## Installing / running
+## Installing / runningq
 
 Assuming all the prerequisites are met, you can run the following commands to install and run the app:
 
